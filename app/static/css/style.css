@@ -1,0 +1,478 @@
+/* -----------------------
+   GENERAL BODY
+------------------------ */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+.dark-mode {
+    background-color: #121212;
+    color: #f0f0f0;
+}
+
+html {
+    margin: 0;
+    padding: 0;
+}
+/* -----------------------
+   HEADER
+------------------------ */
+header {
+    display: flex;
+    justify-content: center; /* Center title */
+    align-items: center;
+    height: 100px;
+    background-color: #2A565B;
+    color: white;
+    position: sticky;
+    top: 40;
+    z-index: 100;
+    font-weight: bold;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+header .logo {
+    font-family: 'Montserrat Subrayada', serif;   /* or whatever font you want */
+    font-size: 40px;                 /* optional: change size */
+    font-weight: bold;               /* optional: make it bolder */
+    letter-spacing: 1px;             /* optional: spacing between letters */
+    color: #fff;                     /* optional: color, if you want different from header links */
+}
+
+/* -----------------------
+   DARK MODE TOGGLE
+------------------------ */
+#darkModeToggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: #2A565B;
+    color: white;
+    font-size: 18px;
+    cursor: pointer;
+    z-index: 200;
+}
+
+/* -----------------------
+   DASHBOARD CONTAINER
+------------------------ */
+.dashboard-container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+/* -----------------------
+   TABS
+------------------------ */
+.tabs {
+    display: flex;
+    border-bottom: 2px solid #ddd;
+    margin-bottom: 20px;
+}
+
+.tablink {
+    flex: 1;
+    padding: 12px 20px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #eee;
+    border: none;
+    outline: none;
+    transition: 0.3s;
+    font-weight: bold;
+}
+
+.tablink.active {
+    background-color: #2A565B;
+    color: white;
+    border-bottom: 3px solid #005f99;
+}
+
+/* -----------------------
+   TAB CONTENT
+------------------------ */
+.tab-content {
+    display: none;
+}
+
+/* -----------------------
+   FORMS
+------------------------ */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+form input, form select, form button {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+form button {
+    background-color: #2A565B;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+form button:hover {
+    background-color: #005f99;
+}
+
+/* -----------------------
+   TABLES
+------------------------ */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+thead {
+    background-color: #2A565B;
+    color: white;
+}
+
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+.dark-mode tbody tr:hover {
+    background-color: #1f1f1f;
+}
+
+td button {
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+td button.editRun {
+    background-color: #d3b99f;
+    color: black;
+}
+
+td button.deleteRun {
+    background-color: #061826;
+    color: white;
+}
+
+/* -----------------------
+   MODAL
+------------------------ */
+#editModal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex; justify-content: center; align-items: center;
+    z-index: 1000;
+    display: none;
+}
+
+#modalContent {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 320px;
+}
+
+#modalContent h3 {
+    margin-top: 0;
+}
+
+#modalContent input {
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+#modalContent button {
+    margin-top: 10px;
+}
+
+#calendar-container {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    max-width: 500px;
+}
+
+#calendar-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+#calendar-header button {
+    background: #f2f2f7;
+    border: none;
+    border-radius: 12px;
+    padding: 6px 12px;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+#calendar-header button:hover {
+    background: #e5e5ea;
+}
+
+#calendar-title {
+    font-weight: 600;
+    font-size: 18px;
+}
+
+#calendar {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 8px;
+}
+
+.calendar-header-day {
+    text-align: center;
+    font-size: 12px;
+    color: #8e8e93;
+    font-weight: 500;
+}
+
+.calendar-day {
+    aspect-ratio: 1 / 1;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    background: #e5e5ea;
+    position: relative;
+    transition: 0.2s ease;
+}
+
+.calendar-day:hover {
+    background: #e5e5ea;
+}
+
+.calendar-day.has-run {
+    background: #2A565B;
+    color: white;
+    font-weight: 600;
+}
+
+.calendar-day.today {
+    border: 2px solid #2A565B;
+}
+
+/* -----------------------
+   HOME TAB LAYOUT
+------------------------ */
+.home-flex {
+    display: flex;
+    gap: 20px;
+}
+
+.home-flex > div {
+    flex: 1;
+}
+
+/* -----------------------
+   ANALYTICS / DATA LAYOUT
+------------------------ */
+.chart-container {
+    margin-top: 20px;
+}
+
+.leaderboard-section {
+    margin-bottom: 40px;
+}
+
+/* -----------------------
+   LEADERBOARD STYLING
+------------------------ */
+#leaderboard-container {
+    margin-top: 20px;
+}
+
+.leaderboard-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.leaderboard-table thead {
+    background-color: #2A565B;
+    color: white;
+}
+
+.leaderboard-table th,
+.leaderboard-table td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+.leaderboard-table tbody tr:hover {
+    background-color: #2A565B;
+}
+
+.dark-mode .leaderboard-table thead {
+    background-color: #333;
+}
+
+.dark-mode .leaderboard-table tbody tr:hover {
+    background-color: #1f1f1f;
+}
+
+/* -----------------------
+   DARK MODE STYLING
+------------------------ */
+.dark-mode header {
+    background-color: #1e1e1e;
+    color: #f0f0f0;
+}
+
+.dark-mode form input,
+.dark-mode form select,
+.dark-mode form button {
+    background-color: #333;
+    color: #f0f0f0;
+    border: 1px solid #555;
+}
+
+.dark-mode table thead {
+    background-color: #333;
+}
+
+.dark-mode #modalContent {
+    background-color: #222;
+    color: #f0f0f0;
+}
+
+/* -----------------------
+   NEW HOME GRID LAYOUT (Top: Form + Calendar, Bottom: Full Table)
+------------------------ */
+
+#home-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+/* Top Left: Data Input */
+#top-left {
+    grid-column: 1;
+    grid-row: 1;
+}
+
+/* Top Right: Calendar */
+#top-right {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Bottom: Table spanning full width */
+#bottom-full {
+    grid-column: 1 / 3;
+    grid-row: 2;
+}
+
+/* Ensure calendar doesn't stretch too wide */
+#calendar-container {
+    width: 100%;
+    max-width: 450px;
+}
+
+/* -----------------------
+   DARK MODE CALENDAR FIX
+------------------------ */
+.dark-mode #calendar-container,
+.dark-mode #calendar-header,
+.dark-mode #calendar {
+    color: #222; /* keeps the text light on dark background */
+}
+
+.dark-mode .calendar-header-day {
+    color: #222; /* days of week headers */
+}
+
+.dark-mode .calendar-day {
+    background-color: #1f1f1f; /* dark background for days */
+    color: #f0f0f0; /* keep day numbers readable */
+}
+
+.dark-mode .calendar-day.has-run {
+    background-color: #d3b99f; /* keep runs highlighted */
+    color: white;
+}
+
+.dark-mode .calendar-day.today {
+    border-color: #d3b99f; /* maintain highlight for today */
+}
+
+/* -----------------------
+   MODERN DROPDOWN STYLING
+------------------------ */
+.tab-content .distance-filter-container {
+    display: flex;
+    justify-content: center; /* centers the dropdown */
+    margin-bottom: 20px;
+}
+
+.distance-filter-container select {
+    appearance: none; /* removes default arrow for styling */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    padding: 10px 40px 10px 15px;
+    border-radius: 12px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 16px;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    transition: all 0.2s ease;
+    position: relative;
+}
+
+.distance-filter-container select:hover {
+    border-color: #2A565B;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.distance-filter-container select:focus {
+    outline: none;
+    border-color: #005f99;
+    box-shadow: 0 0 0 3px rgba(0,95,153,0.2);
+}
+
+.distance-filter-container select option[disabled] {
+    color: #aaa; /* lighter gray for placeholder */
+}

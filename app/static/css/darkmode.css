@@ -1,0 +1,53 @@
+body.dark-mode {
+    background-color: #121212;
+    color: #f0f0f0;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Segoe UI', sans-serif;
+}
+
+.dashboard-header h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+/* Tabs */
+.tab-nav {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.tab-btn {
+    padding: 10px 20px;
+    background: #f5f5f5;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.tab-btn.active {
+    background: #007bff;
+    color: white;
+}
+
+/* Dark mode toggle fixed bottom-left */
+.dark-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #007bff;
+    border: none;
+    cursor: pointer;
+    z-index: 1000;
+}
+body.dark-mode .dark-toggle {
+    background: #f5f5f5;
+    color: #121212;
+}

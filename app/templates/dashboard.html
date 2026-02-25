@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <!-- HEADER -->
+    <header>
+        <h1 class="logo">RunTracker</h1>
+        <div class="header-right">
+            <a href="{{ url_for('main.logout') }}">Logout</a>
+        </div>
+    </header>
+
+    <!-- DARK MODE TOGGLE -->
+    <button id="darkModeToggle">🌓</button>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tablink active" data-tab="home">Home</button>
+        <button class="tablink" data-tab="data">Data</button>
+        <button class="tablink" data-tab="analytics">Analytics</button>
+        <button class="tablink" data-tab="leaderboard">Leaderboard</button>
+    </div>
+
+    <!-- ---------------- HOME TAB ---------------- -->
+    <div class="tab-content" id="home">
+
+        <div id="home-layout" style="display:flex; gap:20px;">
+
+    <!-- LEFT SIDE: Training Status + Insight + Add/Edit Form -->
+    <div id="top-left" style="flex:1; display:flex; flex-direction:column; justify-content:space-between; height:500px;">
+        
+	<!-- WEEKLY STREAK -->
+    <div id="weeklyStreakContainer">
+        <p id="weeklyStreak" style="margin:0; font-weight:bold;">Weekly Streak: -- weeks</p>
+    </div>
+
+        <!-- TRAINING STATUS & INSIGHT -->
+        <div id="training-insight" style="margin-bottom:10px;">
+            <p id="trainingStatus" style="margin:0; font-weight:bold;">Training Status: --</p>
+            <p id="insight" style="margin:0; font-style:italic;">Insight: --</p>
+        </div>
+
+        <!-- ADD/EDIT FORM -->
+        <div id="add-edit-container">
+            <h3>Add/Edit Run</h3>
+            <form id="addRunForm" method="POST" action="{{ url_for('main.add_run') }}">
+                <label>Date:</label>
+                <input type="date" name="date" required>
+
+                <label>Distance:</label>
+                <select name="distance" required>
+                    <option value="40">40m</option>
+                    <option value="60">60m</option>
+                    <option value="100">100m</option>
+                    <option value="200">200m</option>
+                    <option value="400">400m (1/4 Mile)</option>
+                    <option value="800">800m (1/2 Mile)</option>
+                    <option value="1000">1000m</option>
+                    <option value="1200">1200m</option>
+                    <option value="1600">1600m (1 Mile)</option>
+                    <option value="3200">3200m (2 Mile)</option>
+                    <option value="5000">5k (3 Mile)</option>
+                    {% for mi in range(3,27) %}
+                        <option value="{{ mi }}">{{ mi }} Mile{% if mi>1 %}s{% endif %}</option>
+                    {% endfor %}
+                </select>
+
+                <label>Duration (MM:SS):</label>
+                <input type="text" name="duration" placeholder="MM:SS"
+                       pattern="^\d+:[0-5]\d$" required>
+
+                <button type="submit">Add Run</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE: Calendar -->
+    <div id="top-right" style="flex:1;">
+        <div id="calendar-container">
+            <div id="calendar-header">
+                <button id="prev-month">‹</button>
+                <h3 id="calendar-title"></h3>
+                <button id="next-month">›</button>
+            </div>
+            <div id="calendar"></div>
+        </div>
+    </div>
+
+</div>
+
+        <!-- BOTTOM FULL WIDTH: Runs Table -->
+        <div id="bottom-full">
+            <h3>Your Runs</h3>
+            <table id="runsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Distance</th>
+                        <th>Duration</th>
+                        <th>Pace</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for run in runs %}
+                    <tr data-id="{{ run.id }}" data-distance="{{ run.distance }}">
+                        <td>{{ run.date.strftime('%Y-%m-%d') }}</td>
+                        <td>{{ run.distance }}</td>
+                        <td>{{ run.duration }}</td>
+                        <td><!-- Pace populated by JS --></td>
+                        <td>
+                            <a href="/run/${run.id}" class="editRun">View / Edit</a>
+                            <button class="deleteRun">Delete</button>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- ---------------- DATA TAB ---------------- -->
+    <div class="tab-content" id="data">
+        <div class="distance-filter-container">
+            <select id="dataDistanceFilter">
+                <option value="" disabled selected>Distance</option>
+            </select>
+        </div>
+        <div id="dataTableContainer"></div>
+        <div id="paceChart" class="chart-container"></div>
+    </div>
+
+    <!-- ---------------- ANALYTICS TAB ---------------- -->
+    <div class="tab-content" id="analytics">
+        <div class="distance-filter-container">
+            <select id="analyticsDistanceFilter">
+                <option value="" disabled selected>Distance</option>
+            </select>
+        </div>
+        <div id="vo2Estimation" class="chart-container"></div>
+        <div id="performancePrediction" class="chart-container"></div>
+        <div class="card p-4 mb-4">
+            <h5>Acute:Chronic Workload Ratio</h5>
+            <canvas id="acwrChart"></canvas>
+        </div>
+        <div id="rollingLoad" class="chart-container"></div>
+        <div id="streaks" class="chart-container"></div>
+    </div>
+
+    <!-- ---------------- LEADERBOARD TAB ---------------- -->
+    <div class="tab-content" id="leaderboard">
+        <div class="distance-filter-container">
+            <select id="leaderboardDistanceFilter">
+                <option value="" disabled selected>Distance</option>
+            </select>
+        </div>
+        <div id="leaderboard-container"></div>
+    </div>
+
+    <!-- ---------------- MODAL EDIT ---------------- -->
+    <div id="editModal">
+        <div id="modalContent">
+            <h3>Edit Run</h3>
+            <form id="modalForm">
+                <label>Date:</label>
+                <input type="date" name="date" required>
+
+                <label>Distance:</label>
+                <input type="number" step="0.01" name="distance" required>
+
+                <label>Duration:</label>
+                <input type="text" name="duration" required>
+
+                <button type="submit">Save</button>
+                <button type="button" id="closeModal">Cancel</button>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<!-- JS -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+<script src="{{ url_for('static', filename='js/charts.js') }}"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+
+{% endblock %}
